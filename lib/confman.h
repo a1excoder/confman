@@ -31,7 +31,7 @@ char *get_name(const char *string, size_t start, size_t end)
     return vname;
 }
 
-static inline 
+static 
 char *get_native_data(const char *string, enum TYPE vtype, size_t start, size_t end)
 {
     char *data = (char*)malloc(end - start);
@@ -84,7 +84,7 @@ char *get_native_data(const char *string, enum TYPE vtype, size_t start, size_t 
     return data;
 }
 
-static inline 
+static 
 parse check_string(const char *string, size_t size, enum TYPE vtype)
 {
     parse result = {NULL, NULL};
@@ -113,7 +113,7 @@ parse check_string(const char *string, size_t size, enum TYPE vtype)
     return result;
 }
 
-static inline 
+static 
 char *find_data(FILE *data_file, const char *var_name, enum TYPE vtype)
 {
     char string[PBUFFER];
