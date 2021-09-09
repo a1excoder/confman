@@ -120,6 +120,7 @@ char *find_data(FILE *data_file, const char *var_name, enum TYPE vtype)
     parse data;
     char *value;
 
+    rewind(data_file);
     while (fgets(string, PBUFFER, data_file)) {
         data = check_string(string, strlen(string), vtype);
         if (data.var_name == NULL && data.data == NULL) continue;
