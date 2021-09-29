@@ -15,7 +15,7 @@ enum TYPE {
 } S = STR, N = NUM;
 
 static inline 
-char *get_name(const char *string, size_t start, size_t end)
+char *get_name(const char *string, const size_t start, const size_t end)
 {
     char *vname = (char*)malloc(end - start);
     int end_inx = 0;
@@ -32,7 +32,7 @@ char *get_name(const char *string, size_t start, size_t end)
 }
 
 static 
-char *get_native_data(const char *string, enum TYPE vtype, size_t start, size_t end)
+char *get_native_data(const char *string, const enum TYPE vtype, const size_t start, const size_t end)
 {
     char *data = (char*)malloc(end - start);
     int end_inx = 0;
@@ -68,6 +68,7 @@ char *get_native_data(const char *string, enum TYPE vtype, size_t start, size_t 
 
                         for (int k = j + 1; k <= end; k++) {
                             if (string[k] == '"') break;
+
                             data[end_inx] = string[k];
 
                             end_inx++;
@@ -85,7 +86,7 @@ char *get_native_data(const char *string, enum TYPE vtype, size_t start, size_t 
 }
 
 static 
-parse check_string(const char *string, size_t size, enum TYPE vtype)
+parse check_string(const char *string, const size_t size, const enum TYPE vtype)
 {
     parse result = {NULL, NULL};
     int inx = 0;
@@ -113,22 +114,18 @@ parse check_string(const char *string, size_t size, enum TYPE vtype)
     return result;
 }
 
-static 
-char *find_data(FILE *data_file, const char *var_name, enum TYPE vtype)
+void get_str_var(FILE *file, const char *var_name, char *data_c)
 {
     char string[PBUFFER];
     parse data;
-    char *value;
 
-    rewind(data_file);
-    while (fgets(string, PBUFFER, data_file)) {
-        data = check_string(string, strlen(string), vtype);
+    rewind(file);
+    while (fgets(string, PBUFFER, file)) {
+        data = check_string(string, strlen(string), S);
         if (data.var_name == NULL && data.data == NULL) continue;
 
         if (!strcmp(data.var_name, var_name)) {
-            char s[strlen(data.data)];
-            memmove(s, data.data, strlen(data.data));
-            value = s;
+            memmove(data_c, data.data, strlen(data.data));
 
             free(data.var_name);
             free(data.data);
@@ -136,16 +133,27 @@ char *find_data(FILE *data_file, const char *var_name, enum TYPE vtype)
         }
     }
 
-    return value;
 }
 
-void get_str_var(FILE *file, char *vname, char *data)
+int get_int_var(FILE *file, const char *var_name)
 {
-    char *pdata = find_data(file, vname, S);
-    memmove(data, pdata, strlen(pdata));
-}
+    char string[PBUFFER];
+    parse data;
+    int result_data;
 
-int get_int_var(FILE *file, char *vname)
-{
-    return atoi(find_data(file, vname, N));
+    rewind(file);
+    while (fgets(string, PBUFFER, file)) {
+        data = check_string(string, strlen(string), N);
+        if (data.var_name == NULL && data.data == NULL) continue;
+
+        if (!strcmp(data.var_name, var_name)) {
+            result_data = atoi(data.data);
+
+            free(data.var_name);
+            free(data.data);
+            break;
+        }
+    }
+
+    return result_data;
 }
