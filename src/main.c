@@ -14,7 +14,7 @@ int main(int count, const char *data[])
         return 2;
     }
 
-    char *data1;
+    char data1[100];
     get_str_var(file, "vv1", data1);
     printf("%s\n", data1);
 
