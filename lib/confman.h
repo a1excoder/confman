@@ -192,8 +192,6 @@ int get_int_var(FILE *file, const char *var_name)
         if (data.var_name == NULL && data.data == NULL) continue;
 
         if (!strcmp(data.var_name, var_name)) {
-
-            printf("\n|%s|\n", data.data);
             result_data = atoi(data.data);
 
             free(data.var_name);
