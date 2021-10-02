@@ -18,8 +18,12 @@ int main(int count, const char *data[])
     get_str_var(file, "vv1", data1);
     printf("%s\n", data1);
 
+    printf("\n%s\n", ERRORBUFFER);
+
     int data2 = get_int_var(file, "iv2");
     printf("%d\n", data2);
+
+    printf("\n%s\n", ERRORBUFFER);
 
     fclose(file);
     return 0;
