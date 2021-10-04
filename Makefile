@@ -8,5 +8,5 @@ buildlib:
 	rm confman.o
 
 buildmain:
-	gcc -c ./src/main.c
-	gcc -o ./example/main main.o -L./lib -lconfman
+	gcc -c $(MAINFDIR)
+	gcc -o $(ENDDIR) main.o -L./lib -lconfman
