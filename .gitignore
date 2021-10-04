@@ -1,0 +1,3 @@
+libconfman.a
+main.o
+./example/main

@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "../lib/confman.h"
+
+extern char ERRORBUFFER[100];
 
 int main(int count, const char *data[])
 {

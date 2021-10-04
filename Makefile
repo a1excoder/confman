@@ -1,8 +1,12 @@
 MAINFDIR = ./src/main.c
 ENDDIR = ./example/main
 
-build:
-	gcc $(MAINFDIR) -o $(ENDDIR)
 
-run:
-	./example/main ./example/first.conf
+buildlib:
+	gcc -c ./lib/confman.c
+	ar r ./lib/libconfman.a confman.o
+	rm confman.o
+
+buildmain:
+	gcc -c ./src/main.c
+	gcc -o ./example/main main.o -L./lib -lconfman
