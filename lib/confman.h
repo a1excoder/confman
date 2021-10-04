@@ -77,7 +77,10 @@ char *get_native_data(const char *string, const enum TYPE vtype, const size_t st
 
                 if (string[i] == '=') {
                     for (int j = i + 1; j <= end; j++) {
-                        if (string[j] == '=' || isalpha(string[j])) break;
+                        if (string[j] == '=' || isalpha(string[j])) {
+                            sprintf(ERRORBUFFER, "[Syntax error] - on %d string on %d symbol", str_n, j+1);
+                            break;
+                        }
 
                         if (string[j] == '-' || isdigit(string[j])) {
                             data[end_inx] = string[j];
@@ -94,27 +97,30 @@ char *get_native_data(const char *string, const enum TYPE vtype, const size_t st
     // read string type variables
     else if (vtype == S) {
 
-        for (int i = start; i <= end; i++) {
+        for (int i = start + 1; i <= end; i++) {
             if (string[i] == '\0') break;
 
-            if (string[i] == '=') {
-                for (int j = i + 1; j <= end; j++) {
-                    if (string[j] == '=' || isdigit(string[j]) || isalpha(string[j])) break;
-                    if (string[j] == '"') {
+            if (string[i] == ' ' || string[i] == '=') {
+                if (string[i] == '=') {
+                    for (int j = i + 1; j <= end; j++) {
+                        if (string[j] == '=' || isdigit(string[j]) || isalpha(string[j])) break;
+                        if (string[j] == '"') {
 
-                        for (int k = j + 1; k <= end; k++) {
-                            if (string[k] == '"') break;
+                            for (int k = j + 1; k <= end; k++) {
+                                if (string[k] == '"') break;
+                                if (k == end) sprintf(ERRORBUFFER, "[Syntax error] - on %d string on %d symbol: {\"} not found", str_n, k+1);
 
-                            data[end_inx] = string[k];
+                                data[end_inx] = string[k];
 
-                            end_inx++;
-                            data[end_inx] = '\0';
+                                end_inx++;
+                                data[end_inx] = '\0';
+                            }
+                            break;
                         }
-                        break;
                     }
+                    break;
                 }
-                break;
-            }
+            } else sprintf(ERRORBUFFER, "[Syntax error] - on %d string on %d symbol", str_n, i+1);
         }
     }
 
