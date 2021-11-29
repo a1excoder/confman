@@ -1,6 +1,8 @@
 #include <stdio.h>
 
 extern char ERRORBUFFER[100];
+extern void get_str_var(FILE *file, const char *var_name, char *data_c);
+extern int get_int_var(FILE *file, const char *var_name);
 
 int main(int count, const char *data[])
 {
